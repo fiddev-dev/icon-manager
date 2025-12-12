@@ -12,107 +12,54 @@
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 20px;
             display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            background: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 20px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 20px;
+            align-items: center;
         }
 
-        .logo-text {
-            font-size: 24px;
-            font-weight: 700;
-            color: #1a1a2e;
-        }
-
-        .main-container {
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
+            width: 100%;
+            padding: 40px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            flex: 1;
+            gap: 40px;
         }
 
-        .editor-section {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
+        h1 {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #333;
             margin-bottom: 20px;
-            color: #1a1a2e;
+            font-size: 2em;
         }
 
-        .preview-container {
+        .preview-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
-            flex: 1;
         }
 
-        .canvas-wrapper {
+        .canvas-container {
             width: 100%;
-            max-width: 320px;
+            max-width: 400px;
             aspect-ratio: 1;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
+            border: 3px dashed #ccc;
+            border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
             overflow: hidden;
-            background: #f8f9fa;
-            transition: all 0.3s ease;
-        }
-
-        .canvas-wrapper:hover {
-            border-color: #4361ee;
+            background: #f5f5f5;
         }
 
         #iconCanvas {
@@ -121,22 +68,21 @@
 
         .upload-prompt {
             text-align: center;
-            color: #6c757d;
-            font-size: 16px;
-            padding: 20px;
+            color: #999;
+            font-size: 1.2em;
         }
 
         .controls-section {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-height: 70vh;
+            gap: 25px;
+            max-height: 80vh;
             overflow-y: auto;
             padding-right: 10px;
         }
 
         .controls-section::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         .controls-section::-webkit-scrollbar-track {
@@ -145,7 +91,7 @@
         }
 
         .controls-section::-webkit-scrollbar-thumb {
-            background: #4361ee;
+            background: #667eea;
             border-radius: 10px;
         }
 
@@ -157,21 +103,20 @@
 
         .control-group label {
             font-weight: 600;
-            color: #495057;
-            font-size: 14px;
+            color: #555;
+            font-size: 0.95em;
         }
 
         input[type="file"] {
-            padding: 12px;
-            border: 2px solid #e9ecef;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
-            background: #f8f9fa;
         }
 
         input[type="file"]:hover {
-            border-color: #4361ee;
+            border-color: #667eea;
         }
 
         input[type="color"] {
@@ -184,87 +129,82 @@
 
         input[type="range"] {
             width: 100%;
-            height: 6px;
+            height: 8px;
             border-radius: 5px;
-            background: #e9ecef;
+            background: #e0e0e0;
             outline: none;
             cursor: pointer;
         }
 
         input[type="range"]::-webkit-slider-thumb {
             appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            background: #4361ee;
+            background: #667eea;
             cursor: pointer;
         }
 
         input[type="range"]::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            background: #4361ee;
+            background: #667eea;
             cursor: pointer;
             border: none;
         }
 
         .range-value {
             text-align: right;
-            color: #4361ee;
+            color: #667eea;
             font-weight: 600;
-            font-size: 14px;
         }
 
         .button-group {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
         button {
             flex: 1;
-            padding: 12px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 1em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             min-width: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
         .btn-secondary {
-            background: #e9ecef;
-            color: #495057;
+            background: #e0e0e0;
+            color: #555;
         }
 
         .btn-secondary:hover {
-            background: #dee2e6;
+            background: #d0d0d0;
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #06ffa5 0%, #3282b8 100%);
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
         }
 
         .btn-success:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(6, 255, 165, 0.3);
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.4);
         }
 
         .size-selector {
@@ -275,23 +215,22 @@
 
         .size-btn {
             padding: 10px;
-            border: 2px solid #e9ecef;
+            border: 2px solid #e0e0e0;
             background: white;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 600;
-            font-size: 14px;
         }
 
         .size-btn:hover {
-            border-color: #4361ee;
+            border-color: #667eea;
         }
 
         .size-btn.active {
-            background: #4361ee;
+            background: #667eea;
             color: white;
-            border-color: #4361ee;
+            border-color: #667eea;
         }
 
         .gradient-controls {
@@ -328,7 +267,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #dee2e6;
+            background-color: #ccc;
             transition: 0.4s;
             border-radius: 26px;
         }
@@ -346,7 +285,7 @@
         }
 
         input:checked + .toggle-slider {
-            background-color: #4361ee;
+            background-color: #667eea;
         }
 
         input:checked + .toggle-slider:before {
@@ -369,19 +308,18 @@
         .modal-content {
             background: white;
             padding: 30px;
-            border-radius: 16px;
+            border-radius: 15px;
             max-width: 500px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .modal-header {
-            font-size: 20px;
+            font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #1a1a2e;
+            color: #333;
         }
 
         .size-checklist {
@@ -395,21 +333,21 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 12px;
-            border: 2px solid #e9ecef;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .checkbox-item:hover {
-            border-color: #4361ee;
+            border-color: #667eea;
             background: #f8f9ff;
         }
 
         .checkbox-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             cursor: pointer;
         }
 
@@ -419,31 +357,45 @@
             font-weight: 500;
         }
 
-        /* Icon Library Section */
-        .icon-library-section {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        .icon-library-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon-library-content {
+            background: white;
             padding: 30px;
-            margin: 0 auto 30px;
-            max-width: 1200px;
-            width: calc(100% - 40px);
+            border-radius: 15px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .icon-search-box {
             width: 100%;
             padding: 15px 20px;
-            border: 2px solid #e9ecef;
+            border: 2px solid #e0e0e0;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 1em;
             transition: all 0.3s;
-            margin-bottom: 20px;
         }
 
         .icon-search-box:focus {
             outline: none;
-            border-color: #4361ee;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .icon-grid {
@@ -457,7 +409,7 @@
 
         .icon-item {
             aspect-ratio: 1;
-            border: 2px solid #e9ecef;
+            border: 2px solid #e0e0e0;
             border-radius: 10px;
             display: flex;
             justify-content: center;
@@ -469,7 +421,7 @@
         }
 
         .icon-item:hover {
-            border-color: #4361ee;
+            border-color: #667eea;
             background: #f8f9ff;
             transform: scale(1.05);
         }
@@ -483,198 +435,152 @@
         .icon-loading {
             text-align: center;
             padding: 40px;
-            color: #6c757d;
+            color: #999;
         }
 
         .icon-count {
             text-align: center;
-            color: #6c757d;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .load-more-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .load-more-btn {
-            background: #e9ecef;
-            color: #495057;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .load-more-btn:hover {
-            background: #dee2e6;
+            color: #666;
+            font-size: 0.9em;
         }
 
         @media (max-width: 768px) {
-            .main-container {
+            .container {
                 grid-template-columns: 1fr;
-                padding: 0 15px;
-            }
-
-            .header-content {
-                padding: 0 15px;
-            }
-
-            .logo-text {
-                font-size: 20px;
-            }
-
-            .editor-section {
                 padding: 20px;
             }
 
-            .icon-library-section {
-                width: calc(100% - 30px);
-                padding: 20px;
+            h1 {
+                font-size: 1.5em;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">🎨</div>
-                <div class="logo-text">Icon Editor Pro</div>
+    <div class="container">
+        <h1>🎨 Icon Editor Pro</h1>
+        
+        <div class="preview-section">
+            <div class="canvas-container" id="canvasContainer">
+                <canvas id="iconCanvas"></canvas>
+                <div class="upload-prompt" id="uploadPrompt">Upload gambar PNG untuk memulai</div>
             </div>
-        </div>
-    </header>
-
-    <div class="main-container">
-        <div class="editor-section">
-            <h2 class="section-title">Preview</h2>
-            <div class="preview-container">
-                <div class="canvas-wrapper" id="canvasContainer">
-                    <canvas id="iconCanvas"></canvas>
-                    <div class="upload-prompt" id="uploadPrompt">Upload gambar PNG untuk memulai</div>
-                </div>
-                
-                <div class="button-group">
-                    <button class="btn-primary" onclick="downloadIcon()">📥 Download</button>
-                    <button class="btn-success" onclick="openBatchExport()">📦 Batch Export</button>
-                    <button class="btn-secondary" onclick="resetEditor()">🔄 Reset</button>
-                </div>
+            
+            <div class="button-group">
+                <button class="btn-primary" onclick="downloadIcon()">📥 Download</button>
+                <button class="btn-success" onclick="openBatchExport()">📦 Batch Export</button>
+                <button class="btn-secondary" onclick="resetEditor()">🔄 Reset</button>
             </div>
         </div>
 
-        <div class="editor-section">
-            <h2 class="section-title">Controls</h2>
-            <div class="controls-section">
-                <div class="control-group">
-                    <label>📁 Upload Gambar PNG</label>
-                    <input type="file" id="imageUpload" accept="image/png" onchange="handleImageUpload(event)">
-                </div>
+        <div class="controls-section">
+            <div class="control-group">
+                <label>📁 Upload Gambar PNG atau Pilih Icon</label>
+                <input type="file" id="imageUpload" accept="image/png" onchange="handleImageUpload(event)">
+                <button class="btn-secondary" style="margin-top: 10px;" onclick="openIconLibrary()">🎨 Pilih dari Icon Library</button>
+            </div>
 
-                <div class="control-group">
-                    <label>🎨 Background Type</label>
-                    <div class="toggle-group">
-                        <span>Solid</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="gradientToggle" onchange="toggleGradient()">
-                            <span class="toggle-slider"></span>
-                        </label>
-                        <span>Gradient</span>
-                    </div>
+            <div class="control-group">
+                <label>🎨 Background Type</label>
+                <div class="toggle-group">
+                    <span>Solid</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gradientToggle" onchange="toggleGradient()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>Gradient</span>
                 </div>
+            </div>
 
-                <div class="control-group" id="solidColorGroup">
-                    <label>🎨 Warna Background</label>
-                    <input type="color" id="bgColor" value="#ffffff" onchange="updateCanvas()">
+            <div class="control-group" id="solidColorGroup">
+                <label>🎨 Warna Background</label>
+                <input type="color" id="bgColor" value="#ffffff" onchange="updateCanvas()">
+            </div>
+
+            <div class="control-group" id="gradientColorGroup" style="display: none;">
+                <label>🌈 Gradient Colors</label>
+                <div class="gradient-controls">
+                    <input type="color" id="gradientColor1" value="#667eea" onchange="updateCanvas()">
+                    <input type="color" id="gradientColor2" value="#764ba2" onchange="updateCanvas()">
                 </div>
+            </div>
 
-                <div class="control-group" id="gradientColorGroup" style="display: none;">
-                    <label>🌈 Gradient Colors</label>
-                    <div class="gradient-controls">
-                        <input type="color" id="gradientColor1" value="#4361ee" onchange="updateCanvas()">
-                        <input type="color" id="gradientColor2" value="#3a0ca3" onchange="updateCanvas()">
-                    </div>
+            <div class="control-group">
+                <label>📦 Padding (Jarak dari Tepi)</label>
+                <input type="range" id="padding" min="0" max="40" value="20" oninput="updateCanvas()">
+                <div class="range-value" id="paddingValue">20%</div>
+            </div>
+
+            <div class="control-group">
+                <label>🔲 Border Radius (Rounded)</label>
+                <input type="range" id="borderRadius" min="0" max="100" value="0" oninput="updateCanvas()">
+                <div class="range-value" id="radiusValue">0%</div>
+            </div>
+
+            <div class="control-group">
+                <label>🌑 Shadow</label>
+                <input type="range" id="shadowIntensity" min="0" max="50" value="0" oninput="updateCanvas()">
+                <div class="range-value" id="shadowValue">0px</div>
+            </div>
+
+            <div class="control-group">
+                <label>🎨 Filter Warna Gambar</label>
+                <input type="range" id="hueRotate" min="0" max="360" value="0" oninput="updateCanvas()">
+                <div class="range-value" id="hueValue">0°</div>
+            </div>
+
+            <div class="control-group">
+                <label>💡 Brightness</label>
+                <input type="range" id="brightness" min="0" max="200" value="100" oninput="updateCanvas()">
+                <div class="range-value" id="brightnessValue">100%</div>
+            </div>
+
+            <div class="control-group">
+                <label>🔄 Inverse Warna</label>
+                <div class="toggle-group">
+                    <span>Off</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="inverseToggle" onchange="updateCanvas()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>On</span>
                 </div>
+            </div>
 
-                <div class="control-group">
-                    <label>📦 Padding (Jarak dari Tepi)</label>
-                    <input type="range" id="padding" min="0" max="40" value="20" oninput="updateCanvas()">
-                    <div class="range-value" id="paddingValue">20%</div>
-                </div>
-
-                <div class="control-group">
-                    <label>🔲 Border Radius (Rounded)</label>
-                    <input type="range" id="borderRadius" min="0" max="100" value="0" oninput="updateCanvas()">
-                    <div class="range-value" id="radiusValue">0%</div>
-                </div>
-
-                <div class="control-group">
-                    <label>🌑 Shadow</label>
-                    <input type="range" id="shadowIntensity" min="0" max="50" value="0" oninput="updateCanvas()">
-                    <div class="range-value" id="shadowValue">0px</div>
-                </div>
-
-                <div class="control-group">
-                    <label>🎨 Filter Warna Gambar</label>
-                    <input type="range" id="hueRotate" min="0" max="360" value="0" oninput="updateCanvas()">
-                    <div class="range-value" id="hueValue">0°</div>
-                </div>
-
-                <div class="control-group">
-                    <label>💡 Brightness</label>
-                    <input type="range" id="brightness" min="0" max="200" value="100" oninput="updateCanvas()">
-                    <div class="range-value" id="brightnessValue">100%</div>
-                </div>
-
-                <div class="control-group">
-                    <label>🔄 Inverse Warna</label>
-                    <div class="toggle-group">
-                        <span>Off</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="inverseToggle" onchange="updateCanvas()">
-                            <span class="toggle-slider"></span>
-                        </label>
-                        <span>On</span>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label>📏 Ukuran Download</label>
-                    <div class="size-selector">
-                        <button class="size-btn active" onclick="setDownloadSize(512)">512px</button>
-                        <button class="size-btn" onclick="setDownloadSize(256)">256px</button>
-                        <button class="size-btn" onclick="setDownloadSize(128)">128px</button>
-                        <button class="size-btn" onclick="setDownloadSize(64)">64px</button>
-                        <button class="size-btn" onclick="setDownloadSize(32)">32px</button>
-                        <button class="size-btn" onclick="setDownloadSize(1024)">1024px</button>
-                    </div>
+            <div class="control-group">
+                <label>📏 Ukuran Download</label>
+                <div class="size-selector">
+                    <button class="size-btn active" onclick="setDownloadSize(512)">512px</button>
+                    <button class="size-btn" onclick="setDownloadSize(256)">256px</button>
+                    <button class="size-btn" onclick="setDownloadSize(128)">128px</button>
+                    <button class="size-btn" onclick="setDownloadSize(64)">64px</button>
+                    <button class="size-btn" onclick="setDownloadSize(32)">32px</button>
+                    <button class="size-btn" onclick="setDownloadSize(1024)">1024px</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Icon Library Section -->
-    <div class="icon-library-section">
-        <h2 class="section-title">🎨 Icon Library</h2>
-        
-        <input 
-            type="text" 
-            id="iconSearch" 
-            class="icon-search-box" 
-            placeholder="🔍 Cari icon... (contoh: heart, home, star)"
-            oninput="searchIcons()"
-        >
-        
-        <div class="icon-count" id="iconCount">Loading icons...</div>
-        
-        <div class="icon-grid" id="iconGrid">
-            <div class="icon-loading">Memuat icon library...</div>
-        </div>
+    <!-- Icon Library Modal -->
+    <div class="icon-library-modal" id="iconLibraryModal">
+        <div class="icon-library-content">
+            <div class="modal-header">🎨 Bootstrap Icons Library</div>
+            
+            <input 
+                type="text" 
+                id="iconSearch" 
+                class="icon-search-box" 
+                placeholder="🔍 Cari icon... (contoh: heart, home, star)"
+                oninput="searchIcons()"
+            >
+            
+            <div class="icon-count" id="iconCount">Loading icons...</div>
+            
+            <div class="icon-grid" id="iconGrid">
+                <div class="icon-loading">Memuat icon library...</div>
+            </div>
 
-        <div class="load-more-container" id="loadMoreContainer" style="display: none;">
-            <button class="load-more-btn" onclick="loadMoreIcons()">Muat Lebih Banyak Icon</button>
+            <button class="btn-secondary" onclick="closeIconLibrary()">❌ Tutup</button>
         </div>
     </div>
 
@@ -682,7 +588,7 @@
     <div class="batch-export-modal" id="batchModal">
         <div class="modal-content">
             <div class="modal-header">📦 Batch Export Icons</div>
-            <p style="margin-bottom: 20px; color: #6c757d;">Pilih ukuran yang ingin diexport:</p>
+            <p style="margin-bottom: 20px; color: #666;">Pilih ukuran yang ingin diexport:</p>
             
             <div class="size-checklist">
                 <div class="checkbox-item">
@@ -730,11 +636,9 @@
         let isGradient = false;
         let availableIcons = [];
         let allIconsData = [];
-        let currentIconIndex = 0;
-        const iconsPerLoad = 100; // Jumlah icon yang dimuat per batch
 
-        canvas.width = 320;
-        canvas.height = 320;
+        canvas.width = 400;
+        canvas.height = 400;
 
         function handleImageUpload(event) {
             const file = event.target.files[0];
@@ -894,7 +798,7 @@
             }
 
             if (shadowIntensity > 0) {
-                const shadowScale = size / 320;
+                const shadowScale = size / 400;
                 tempCtx.shadowColor = 'rgba(0, 0, 0, 0.3)';
                 tempCtx.shadowBlur = shadowIntensity * shadowScale;
                 tempCtx.shadowOffsetX = (shadowIntensity / 4) * shadowScale;
@@ -1015,100 +919,87 @@
             }
         });
 
-        // Icon Library Functions
-        async function loadBootstrapIcons() {
-            const iconGrid = document.getElementById('iconGrid');
-            const iconCount = document.getElementById('iconCount');
-            iconGrid.innerHTML = '<div class="icon-loading">Memuat daftar icon...</div>';
+        document.getElementById('iconLibraryModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeIconLibrary();
+            }
+        });
 
-            try {
-                // Fetch the icon list from icons.json file
-                const response = await fetch('bootstrap-icons-1.13.1/icons.json');
-                if (!response.ok) {
-                    throw new Error('Failed to load icon list');
-                }
-                
-                const iconList = await response.json();
-                allIconsData = iconList.map(iconName => ({
-                    name: iconName,
-                    path: `bootstrap-icons-1.13.1/icons/${iconName}.svg`
-                }));
-                
-                iconCount.textContent = `Menemukan ${allIconsData.length} icon`;
-                
-                // Load first batch of icons
-                await loadMoreIcons();
-                
-                // Show load more button if there are more icons
-                if (allIconsData.length > iconsPerLoad) {
-                    document.getElementById('loadMoreContainer').style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Error loading icon list:', error);
-                iconGrid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
-                        <p style="color: #dc3545; margin-bottom: 10px;">❌ Gagal memuat daftar icon</p>
-                        <p style="color: #6c757d; font-size: 0.9em;">
-                            Pastikan file "bootstrap-icons-1.13.1/icons.json" tersedia di lokasi yang sama dengan file HTML
-                        </p>
-                        <p style="color: #6c757d; font-size: 0.9em; margin-top: 10px;">
-                            Atau gunakan fitur Upload Gambar PNG untuk mengedit icon Anda.
-                        </p>
-                    </div>
-                `;
+        // Icon Library Functions
+        async function openIconLibrary() {
+            document.getElementById('iconLibraryModal').style.display = 'flex';
+            
+            if (availableIcons.length === 0) {
+                await loadBootstrapIcons();
             }
         }
 
-        async function loadMoreIcons() {
+        function closeIconLibrary() {
+            document.getElementById('iconLibraryModal').style.display = 'none';
+            document.getElementById('iconSearch').value = '';
+        }
+
+        async function loadBootstrapIcons() {
             const iconGrid = document.getElementById('iconGrid');
-            const iconCount = document.getElementById('iconCount');
-            
-            // Clear loading message if it's the first load
-            if (currentIconIndex === 0) {
-                iconGrid.innerHTML = '';
-            }
-            
-            // Determine the end index for this batch
-            const endIndex = Math.min(currentIconIndex + iconsPerLoad, allIconsData.length);
-            
-            // Create a document fragment to batch DOM updates
-            const fragment = document.createDocumentFragment();
-            
-            // Load icons for this batch
-            for (let i = currentIconIndex; i < endIndex; i++) {
-                const icon = allIconsData[i];
-                
-                try {
-                    const response = await fetch(icon.path);
-                    if (response.ok) {
-                        const svgText = await response.text();
-                        
-                        // Create icon item element
-                        const iconItem = document.createElement('div');
-                        iconItem.className = 'icon-item';
-                        iconItem.setAttribute('title', icon.name);
-                        iconItem.setAttribute('onclick', `selectIcon('${icon.path}')`);
-                        iconItem.innerHTML = svgText;
-                        
-                        fragment.appendChild(iconItem);
+            iconGrid.innerHTML = '<div class="icon-loading">Memuat icon dari folder...</div>';
+
+            try {
+                // Coba baca file dari folder bootstrap-icons-1.13.1
+                const commonIcons = [
+                    'alarm', 'arrow-up', 'arrow-down', 'arrow-left', 'arrow-right',
+                    'bell', 'bookmark', 'calendar', 'camera', 'cart',
+                    'check', 'clock', 'cloud', 'download', 'edit',
+                    'envelope', 'eye', 'file', 'folder', 'gear',
+                    'heart', 'home', 'image', 'info-circle', 'lightbulb',
+                    'link', 'list', 'lock', 'map', 'music',
+                    'pencil', 'person', 'phone', 'play', 'plus',
+                    'printer', 'search', 'share', 'star', 'trash',
+                    'upload', 'user', 'video', 'wifi', 'x'
+                ];
+
+                // Coba load icon dari folder
+                const iconPromises = commonIcons.map(async (iconName) => {
+                    try {
+                        const response = await fetch(`bootstrap-icons-1.13.1/icons/${iconName}.svg`);
+                        if (response.ok) {
+                            const svgText = await response.text();
+                            return { name: iconName, svg: svgText, path: `bootstrap-icons-1.13.1/icons/${iconName}.svg` };
+                        }
+                    } catch (e) {
+                        return null;
                     }
-                } catch (error) {
-                    console.error(`Failed to load icon ${icon.name}:`, error);
+                    return null;
+                });
+
+                const loadedIcons = await Promise.all(iconPromises);
+                availableIcons = loadedIcons.filter(icon => icon !== null);
+                allIconsData = [...availableIcons];
+
+                if (availableIcons.length > 0) {
+                    displayIcons(availableIcons);
+                } else {
+                    // Fallback: tampilkan pesan untuk menggunakan CDN Bootstrap Icons
+                    iconGrid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                            <p style="color: #999; margin-bottom: 20px;">
+                                Folder "bootstrap-icons-1.13.1" tidak ditemukan atau kosong.<br>
+                                Silakan pastikan folder ada di lokasi yang sama dengan file HTML ini.
+                            </p>
+                            <p style="color: #666;">
+                                Atau gunakan fitur Upload Gambar PNG untuk mengedit icon Anda.
+                            </p>
+                        </div>
+                    `;
                 }
-            }
-            
-            // Add all new icons to the grid at once
-            iconGrid.appendChild(fragment);
-            
-            // Update current index
-            currentIconIndex = endIndex;
-            
-            // Update icon count
-            iconCount.textContent = `Menampilkan ${Math.min(currentIconIndex, allIconsData.length)} dari ${allIconsData.length} icon`;
-            
-            // Hide load more button if all icons are loaded
-            if (currentIconIndex >= allIconsData.length) {
-                document.getElementById('loadMoreContainer').style.display = 'none';
+            } catch (error) {
+                iconGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                        <p style="color: #ff6b6b; margin-bottom: 10px;">❌ Gagal memuat icon library</p>
+                        <p style="color: #999; font-size: 0.9em;">
+                            Pastikan folder "bootstrap-icons-1.13.1/icons/" tersedia di lokasi yang sama dengan file HTML
+                        </p>
+                    </div>
+                `;
             }
         }
 
@@ -1117,12 +1008,12 @@
             const iconCount = document.getElementById('iconCount');
             
             if (icons.length === 0) {
-                iconGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #6c757d;">Tidak ada icon yang ditemukan</div>';
+                iconGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #999;">Tidak ada icon yang ditemukan</div>';
                 iconCount.textContent = '0 icon ditemukan';
                 return;
             }
 
-            iconCount.textContent = `Menampilkan ${icons.length} icon`;
+            iconCount.textContent = `${icons.length} icon tersedia`;
             
             iconGrid.innerHTML = icons.map(icon => `
                 <div class="icon-item" onclick="selectIcon('${icon.path}')" title="${icon.name}">
@@ -1145,6 +1036,7 @@
                     uploadedImage = img;
                     document.getElementById('uploadPrompt').style.display = 'none';
                     updateCanvas();
+                    closeIconLibrary();
                     URL.revokeObjectURL(url);
                 };
                 
@@ -1158,56 +1050,14 @@
             const searchTerm = document.getElementById('iconSearch').value.toLowerCase();
             
             if (searchTerm === '') {
-                // Reset to show all icons
-                currentIconIndex = 0;
-                document.getElementById('iconGrid').innerHTML = '';
-                document.getElementById('loadMoreContainer').style.display = 
-                    allIconsData.length > iconsPerLoad ? 'block' : 'none';
-                loadMoreIcons();
+                displayIcons(allIconsData);
             } else {
-                // Filter icons based on search term
                 const filtered = allIconsData.filter(icon => 
                     icon.name.toLowerCase().includes(searchTerm)
                 );
-                
-                // Display filtered icons
-                const iconGrid = document.getElementById('iconGrid');
-                const iconCount = document.getElementById('iconCount');
-                
-                if (filtered.length === 0) {
-                    iconGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: #6c757d;">Tidak ada icon yang ditemukan</div>';
-                    iconCount.textContent = '0 icon ditemukan';
-                    document.getElementById('loadMoreContainer').style.display = 'none';
-                    return;
-                }
-
-                iconCount.textContent = `Menemukan ${filtered.length} icon`;
-                
-                // Load only the first batch of filtered icons
-                const firstBatch = filtered.slice(0, iconsPerLoad);
-                iconGrid.innerHTML = firstBatch.map(icon => `
-                    <div class="icon-item" onclick="selectIcon('${icon.path}')" title="${icon.name}">
-                        <img src="${icon.path}" alt="${icon.name}">
-                    </div>
-                `).join('');
-                
-                // Show load more button if there are more filtered icons
-                if (filtered.length > iconsPerLoad) {
-                    document.getElementById('loadMoreContainer').style.display = 'block';
-                    
-                    // Store filtered icons for load more functionality
-                    window.filteredIcons = filtered;
-                    window.currentFilteredIndex = iconsPerLoad;
-                } else {
-                    document.getElementById('loadMoreContainer').style.display = 'none';
-                }
+                displayIcons(filtered);
             }
         }
-
-        // Load icons when page loads
-        window.addEventListener('DOMContentLoaded', function() {
-            loadBootstrapIcons();
-        });
     </script>
 </body>
 </html>
