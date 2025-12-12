@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 1200px;
+            width: 100%;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        h1 {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .preview-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .canvas-container {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1;
+            border: 3px dashed #ccc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #iconCanvas {
+            transition: all 0.3s ease;
+        }
+
+        .upload-prompt {
+            text-align: center;
+            color: #999;
+            font-size: 1.2em;
+        }
+
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        input[type="file"]:hover {
+            border-color: #667eea;
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+        }
+
+        .range-value {
+            text-align: right;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #555;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .size-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .size-btn {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .size-btn:hover {
+            border-color: #667eea;
+        }
+
+        .size-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Icon Editor</h1>
+        
+        <div class="preview-section">
+            <div class="canvas-container" id="canvasContainer">
+                <canvas id="iconCanvas"></canvas>
+                <div class="upload-prompt" id="uploadPrompt">Upload gambar PNG untuk memulai</div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-primary" onclick="downloadIcon()">📥 Download Icon</button>
+                <button class="btn-secondary" onclick="resetEditor()">🔄 Reset</button>
+            </div>
+        </div>
+
+        <div class="controls-section">
+            <div class="control-group">
+                <label>📁 Upload Gambar PNG</label>
+                <input type="file" id="imageUpload" accept="image/png" onchange="handleImageUpload(event)">
+            </div>
+
+            <div class="control-group">
+                <label>🎨 Warna Background</label>
+                <input type="color" id="bgColor" value="#ffffff" onchange="updateCanvas()">
+            </div>
+
+            <div class="control-group">
+                <label>🔲 Border Radius (Rounded)</label>
+                <input type="range" id="borderRadius" min="0" max="100" value="0" oninput="updateCanvas()">
+                <div class="range-value" id="radiusValue">0%</div>
+            </div>
+
+            <div class="control-group">
+                <label>🎨 Filter Warna Gambar</label>
+                <input type="range" id="hueRotate" min="0" max="360" value="0" oninput="updateCanvas()">
+                <div class="range-value" id="hueValue">0°</div>
+            </div>
+
+            <div class="control-group">
+                <label>💡 Brightness</label>
+                <input type="range" id="brightness" min="0" max="200" value="100" oninput="updateCanvas()">
+                <div class="range-value" id="brightnessValue">100%</div>
+            </div>
+
+            <div class="control-group">
+                <label>📏 Ukuran Download</label>
+                <div class="size-selector">
+                    <button class="size-btn active" onclick="setDownloadSize(512)">512px</button>
+                    <button class="size-btn" onclick="setDownloadSize(256)">256px</button>
+                    <button class="size-btn" onclick="setDownloadSize(128)">128px</button>
+                    <button class="size-btn" onclick="setDownloadSize(64)">64px</button>
+                    <button class="size-btn" onclick="setDownloadSize(32)">32px</button>
+                    <button class="size-btn" onclick="setDownloadSize(1024)">1024px</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let canvas = document.getElementById('iconCanvas');
+        let ctx = canvas.getContext('2d');
+        let uploadedImage = null;
+        let downloadSize = 512;
+
+        // Set canvas size
+        canvas.width = 400;
+        canvas.height = 400;
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type === 'image/png') {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        uploadedImage = img;
+                        document.getElementById('uploadPrompt').style.display = 'none';
+                        updateCanvas();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Silakan upload file PNG!');
+            }
+        }
+
+        function updateCanvas() {
+            if (!uploadedImage) return;
+
+            const bgColor = document.getElementById('bgColor').value;
+            const borderRadius = document.getElementById('borderRadius').value;
+            const hueRotate = document.getElementById('hueRotate').value;
+            const brightness = document.getElementById('brightness').value;
+
+            // Update value displays
+            document.getElementById('radiusValue').textContent = borderRadius + '%';
+            document.getElementById('hueValue').textContent = hueRotate + '°';
+            document.getElementById('brightnessValue').textContent = brightness + '%';
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Save context
+            ctx.save();
+
+            // Create rounded rectangle path
+            const radius = (borderRadius / 100) * Math.min(canvas.width, canvas.height) / 2;
+            
+            if (borderRadius >= 100) {
+                // Draw circle when at 100%
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+            } else {
+                // Draw rounded rectangle
+                ctx.beginPath();
+                ctx.moveTo(radius, 0);
+                ctx.lineTo(canvas.width - radius, 0);
+                ctx.arcTo(canvas.width, 0, canvas.width, radius, radius);
+                ctx.lineTo(canvas.width, canvas.height - radius);
+                ctx.arcTo(canvas.width, canvas.height, canvas.width - radius, canvas.height, radius);
+                ctx.lineTo(radius, canvas.height);
+                ctx.arcTo(0, canvas.height, 0, canvas.height - radius, radius);
+                ctx.lineTo(0, radius);
+                ctx.arcTo(0, 0, radius, 0, radius);
+                ctx.closePath();
+                ctx.clip();
+            }
+
+            // Draw background
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Apply filters
+            ctx.filter = `hue-rotate(${hueRotate}deg) brightness(${brightness}%)`;
+
+            // Draw image centered
+            const scale = Math.min(canvas.width / uploadedImage.width, canvas.height / uploadedImage.height) * 0.8;
+            const x = (canvas.width - uploadedImage.width * scale) / 2;
+            const y = (canvas.height - uploadedImage.height * scale) / 2;
+            
+            ctx.drawImage(uploadedImage, x, y, uploadedImage.width * scale, uploadedImage.height * scale);
+
+            // Restore context
+            ctx.restore();
+        }
+
+        function setDownloadSize(size) {
+            downloadSize = size;
+            // Update active button
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function downloadIcon() {
+            if (!uploadedImage) {
+                alert('Silakan upload gambar terlebih dahulu!');
+                return;
+            }
+
+            // Create temporary canvas with download size
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = downloadSize;
+            tempCanvas.height = downloadSize;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            const bgColor = document.getElementById('bgColor').value;
+            const borderRadius = document.getElementById('borderRadius').value;
+            const hueRotate = document.getElementById('hueRotate').value;
+            const brightness = document.getElementById('brightness').value;
+
+            // Save context
+            tempCtx.save();
+
+            // Create rounded rectangle path
+            const radius = (borderRadius / 100) * Math.min(downloadSize, downloadSize) / 2;
+            
+            if (borderRadius >= 100) {
+                // Draw circle when at 100%
+                tempCtx.beginPath();
+                tempCtx.arc(downloadSize / 2, downloadSize / 2, downloadSize / 2, 0, Math.PI * 2);
+                tempCtx.closePath();
+                tempCtx.clip();
+            } else {
+                // Draw rounded rectangle
+                tempCtx.beginPath();
+                tempCtx.moveTo(radius, 0);
+                tempCtx.lineTo(downloadSize - radius, 0);
+                tempCtx.arcTo(downloadSize, 0, downloadSize, radius, radius);
+                tempCtx.lineTo(downloadSize, downloadSize - radius);
+                tempCtx.arcTo(downloadSize, downloadSize, downloadSize - radius, downloadSize, radius);
+                tempCtx.lineTo(radius, downloadSize);
+                tempCtx.arcTo(0, downloadSize, 0, downloadSize - radius, radius);
+                tempCtx.lineTo(0, radius);
+                tempCtx.arcTo(0, 0, radius, 0, radius);
+                tempCtx.closePath();
+                tempCtx.clip();
+            }
+
+            // Draw background
+            tempCtx.fillStyle = bgColor;
+            tempCtx.fillRect(0, 0, downloadSize, downloadSize);
+
+            // Apply filters
+            tempCtx.filter = `hue-rotate(${hueRotate}deg) brightness(${brightness}%)`;
+
+            // Draw image
+            const scale = Math.min(downloadSize / uploadedImage.width, downloadSize / uploadedImage.height) * 0.8;
+            const x = (downloadSize - uploadedImage.width * scale) / 2;
+            const y = (downloadSize - uploadedImage.height * scale) / 2;
+            
+            tempCtx.drawImage(uploadedImage, x, y, uploadedImage.width * scale, uploadedImage.height * scale);
+            tempCtx.restore();
+
+            // Download
+            tempCanvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = `icon-${downloadSize}x${downloadSize}.png`;
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        function resetEditor() {
+            uploadedImage = null;
+            document.getElementById('imageUpload').value = '';
+            document.getElementById('bgColor').value = '#ffffff';
+            document.getElementById('borderRadius').value = '0';
+            document.getElementById('hueRotate').value = '0';
+            document.getElementById('brightness').value = '100';
+            document.getElementById('uploadPrompt').style.display = 'block';
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            updateCanvas();
+        }
+    </script>
+</body>
+</html>
