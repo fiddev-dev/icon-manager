@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Icon Editor</title>
+    <title>Icon Editor Pro</title>
     <style>
         * {
             margin: 0;
@@ -59,6 +59,7 @@
             align-items: center;
             position: relative;
             overflow: hidden;
+            background: #f5f5f5;
         }
 
         #iconCanvas {
@@ -75,6 +76,23 @@
             display: flex;
             flex-direction: column;
             gap: 25px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .controls-section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .controls-section::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .controls-section::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
         }
 
         .control-group {
@@ -179,6 +197,16 @@
             background: #d0d0d0;
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.4);
+        }
+
         .size-selector {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -205,6 +233,130 @@
             border-color: #667eea;
         }
 
+        .gradient-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .gradient-controls input[type="color"] {
+            flex: 1;
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 26px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #667eea;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .batch-export-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .size-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkbox-item:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            flex: 1;
+            font-weight: 500;
+        }
+
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
@@ -219,7 +371,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎨 Icon Editor</h1>
+        <h1>🎨 Icon Editor Pro</h1>
         
         <div class="preview-section">
             <div class="canvas-container" id="canvasContainer">
@@ -228,7 +380,8 @@
             </div>
             
             <div class="button-group">
-                <button class="btn-primary" onclick="downloadIcon()">📥 Download Icon</button>
+                <button class="btn-primary" onclick="downloadIcon()">📥 Download</button>
+                <button class="btn-success" onclick="openBatchExport()">📦 Batch Export</button>
                 <button class="btn-secondary" onclick="resetEditor()">🔄 Reset</button>
             </div>
         </div>
@@ -240,14 +393,46 @@
             </div>
 
             <div class="control-group">
+                <label>🎨 Background Type</label>
+                <div class="toggle-group">
+                    <span>Solid</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gradientToggle" onchange="toggleGradient()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>Gradient</span>
+                </div>
+            </div>
+
+            <div class="control-group" id="solidColorGroup">
                 <label>🎨 Warna Background</label>
                 <input type="color" id="bgColor" value="#ffffff" onchange="updateCanvas()">
+            </div>
+
+            <div class="control-group" id="gradientColorGroup" style="display: none;">
+                <label>🌈 Gradient Colors</label>
+                <div class="gradient-controls">
+                    <input type="color" id="gradientColor1" value="#667eea" onchange="updateCanvas()">
+                    <input type="color" id="gradientColor2" value="#764ba2" onchange="updateCanvas()">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>📦 Padding (Jarak dari Tepi)</label>
+                <input type="range" id="padding" min="0" max="40" value="20" oninput="updateCanvas()">
+                <div class="range-value" id="paddingValue">20%</div>
             </div>
 
             <div class="control-group">
                 <label>🔲 Border Radius (Rounded)</label>
                 <input type="range" id="borderRadius" min="0" max="100" value="0" oninput="updateCanvas()">
                 <div class="range-value" id="radiusValue">0%</div>
+            </div>
+
+            <div class="control-group">
+                <label>🌑 Shadow</label>
+                <input type="range" id="shadowIntensity" min="0" max="50" value="0" oninput="updateCanvas()">
+                <div class="range-value" id="shadowValue">0px</div>
             </div>
 
             <div class="control-group">
@@ -260,6 +445,18 @@
                 <label>💡 Brightness</label>
                 <input type="range" id="brightness" min="0" max="200" value="100" oninput="updateCanvas()">
                 <div class="range-value" id="brightnessValue">100%</div>
+            </div>
+
+            <div class="control-group">
+                <label>🔄 Inverse Warna</label>
+                <div class="toggle-group">
+                    <span>Off</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="inverseToggle" onchange="updateCanvas()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>On</span>
+                </div>
             </div>
 
             <div class="control-group">
@@ -276,13 +473,57 @@
         </div>
     </div>
 
+    <!-- Batch Export Modal -->
+    <div class="batch-export-modal" id="batchModal">
+        <div class="modal-content">
+            <div class="modal-header">📦 Batch Export Icons</div>
+            <p style="margin-bottom: 20px; color: #666;">Pilih ukuran yang ingin diexport:</p>
+            
+            <div class="size-checklist">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="size16" value="16">
+                    <label for="size16">16 x 16 px (Favicon)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="size32" value="32">
+                    <label for="size32">32 x 32 px (Favicon)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="size64" value="64" checked>
+                    <label for="size64">64 x 64 px</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="size128" value="128" checked>
+                    <label for="size128">128 x 128 px</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="size256" value="256" checked>
+                    <label for="size256">256 x 256 px</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="size512" value="512" checked>
+                    <label for="size512">512 x 512 px (Android)</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="size1024" value="1024" checked>
+                    <label for="size1024">1024 x 1024 px (iOS, Play Store)</label>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-success" onclick="executeBatchExport()">✅ Export Semua</button>
+                <button class="btn-secondary" onclick="closeBatchExport()">❌ Batal</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let canvas = document.getElementById('iconCanvas');
         let ctx = canvas.getContext('2d');
         let uploadedImage = null;
         let downloadSize = 512;
+        let isGradient = false;
 
-        // Set canvas size
         canvas.width = 400;
         canvas.height = 400;
 
@@ -305,36 +546,47 @@
             }
         }
 
+        function toggleGradient() {
+            isGradient = document.getElementById('gradientToggle').checked;
+            if (isGradient) {
+                document.getElementById('solidColorGroup').style.display = 'none';
+                document.getElementById('gradientColorGroup').style.display = 'block';
+            } else {
+                document.getElementById('solidColorGroup').style.display = 'block';
+                document.getElementById('gradientColorGroup').style.display = 'none';
+            }
+            updateCanvas();
+        }
+
         function updateCanvas() {
             if (!uploadedImage) return;
 
             const bgColor = document.getElementById('bgColor').value;
+            const gradientColor1 = document.getElementById('gradientColor1').value;
+            const gradientColor2 = document.getElementById('gradientColor2').value;
             const borderRadius = document.getElementById('borderRadius').value;
             const hueRotate = document.getElementById('hueRotate').value;
             const brightness = document.getElementById('brightness').value;
+            const padding = document.getElementById('padding').value;
+            const shadowIntensity = document.getElementById('shadowIntensity').value;
+            const inverse = document.getElementById('inverseToggle').checked;
 
-            // Update value displays
             document.getElementById('radiusValue').textContent = borderRadius + '%';
             document.getElementById('hueValue').textContent = hueRotate + '°';
             document.getElementById('brightnessValue').textContent = brightness + '%';
+            document.getElementById('paddingValue').textContent = padding + '%';
+            document.getElementById('shadowValue').textContent = shadowIntensity + 'px';
 
-            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Save context
             ctx.save();
 
-            // Create rounded rectangle path
             const radius = (borderRadius / 100) * Math.min(canvas.width, canvas.height) / 2;
             
             if (borderRadius >= 100) {
-                // Draw circle when at 100%
                 ctx.beginPath();
                 ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, Math.PI * 2);
                 ctx.closePath();
-                ctx.clip();
             } else {
-                // Draw rounded rectangle
                 ctx.beginPath();
                 ctx.moveTo(radius, 0);
                 ctx.lineTo(canvas.width - radius, 0);
@@ -346,34 +598,127 @@
                 ctx.lineTo(0, radius);
                 ctx.arcTo(0, 0, radius, 0, radius);
                 ctx.closePath();
-                ctx.clip();
             }
 
-            // Draw background
-            ctx.fillStyle = bgColor;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Shadow
+            if (shadowIntensity > 0) {
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                ctx.shadowBlur = shadowIntensity;
+                ctx.shadowOffsetX = shadowIntensity / 4;
+                ctx.shadowOffsetY = shadowIntensity / 4;
+            }
 
-            // Apply filters
-            ctx.filter = `hue-rotate(${hueRotate}deg) brightness(${brightness}%)`;
+            // Background
+            if (isGradient) {
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                gradient.addColorStop(0, gradientColor1);
+                gradient.addColorStop(1, gradientColor2);
+                ctx.fillStyle = gradient;
+            } else {
+                ctx.fillStyle = bgColor;
+            }
+            ctx.fill();
 
-            // Draw image centered
-            const scale = Math.min(canvas.width / uploadedImage.width, canvas.height / uploadedImage.height) * 0.8;
+            // Reset shadow for image
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            ctx.clip();
+
+            const invertFilter = inverse ? 'invert(1) ' : '';
+            ctx.filter = `${invertFilter}hue-rotate(${hueRotate}deg) brightness(${brightness}%)`;
+
+            const paddingPercent = padding / 100;
+            const scale = Math.min(canvas.width / uploadedImage.width, canvas.height / uploadedImage.height) * (1 - paddingPercent);
             const x = (canvas.width - uploadedImage.width * scale) / 2;
             const y = (canvas.height - uploadedImage.height * scale) / 2;
             
             ctx.drawImage(uploadedImage, x, y, uploadedImage.width * scale, uploadedImage.height * scale);
 
-            // Restore context
             ctx.restore();
         }
 
         function setDownloadSize(size) {
             downloadSize = size;
-            // Update active button
             document.querySelectorAll('.size-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
+        }
+
+        function renderIconToCanvas(tempCanvas, size) {
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = size;
+            tempCanvas.height = size;
+
+            const bgColor = document.getElementById('bgColor').value;
+            const gradientColor1 = document.getElementById('gradientColor1').value;
+            const gradientColor2 = document.getElementById('gradientColor2').value;
+            const borderRadius = document.getElementById('borderRadius').value;
+            const hueRotate = document.getElementById('hueRotate').value;
+            const brightness = document.getElementById('brightness').value;
+            const padding = document.getElementById('padding').value;
+            const shadowIntensity = document.getElementById('shadowIntensity').value;
+
+            tempCtx.save();
+
+            const radius = (borderRadius / 100) * Math.min(size, size) / 2;
+            
+            if (borderRadius >= 100) {
+                tempCtx.beginPath();
+                tempCtx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+                tempCtx.closePath();
+            } else {
+                tempCtx.beginPath();
+                tempCtx.moveTo(radius, 0);
+                tempCtx.lineTo(size - radius, 0);
+                tempCtx.arcTo(size, 0, size, radius, radius);
+                tempCtx.lineTo(size, size - radius);
+                tempCtx.arcTo(size, size, size - radius, size, radius);
+                tempCtx.lineTo(radius, size);
+                tempCtx.arcTo(0, size, 0, size - radius, radius);
+                tempCtx.lineTo(0, radius);
+                tempCtx.arcTo(0, 0, radius, 0, radius);
+                tempCtx.closePath();
+            }
+
+            if (shadowIntensity > 0) {
+                const shadowScale = size / 400;
+                tempCtx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                tempCtx.shadowBlur = shadowIntensity * shadowScale;
+                tempCtx.shadowOffsetX = (shadowIntensity / 4) * shadowScale;
+                tempCtx.shadowOffsetY = (shadowIntensity / 4) * shadowScale;
+            }
+
+            if (isGradient) {
+                const gradient = tempCtx.createLinearGradient(0, 0, size, size);
+                gradient.addColorStop(0, gradientColor1);
+                gradient.addColorStop(1, gradientColor2);
+                tempCtx.fillStyle = gradient;
+            } else {
+                tempCtx.fillStyle = bgColor;
+            }
+            tempCtx.fill();
+
+            tempCtx.shadowColor = 'transparent';
+            tempCtx.shadowBlur = 0;
+            tempCtx.shadowOffsetX = 0;
+            tempCtx.shadowOffsetY = 0;
+
+            tempCtx.clip();
+
+            const invertFilter = inverse ? 'invert(1) ' : '';
+            tempCtx.filter = `${invertFilter}hue-rotate(${hueRotate}deg) brightness(${brightness}%)`;
+
+            const paddingPercent = padding / 100;
+            const scale = Math.min(size / uploadedImage.width, size / uploadedImage.height) * (1 - paddingPercent);
+            const x = (size - uploadedImage.width * scale) / 2;
+            const y = (size - uploadedImage.height * scale) / 2;
+            
+            tempCtx.drawImage(uploadedImage, x, y, uploadedImage.width * scale, uploadedImage.height * scale);
+            tempCtx.restore();
         }
 
         function downloadIcon() {
@@ -382,61 +727,9 @@
                 return;
             }
 
-            // Create temporary canvas with download size
             const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = downloadSize;
-            tempCanvas.height = downloadSize;
-            const tempCtx = tempCanvas.getContext('2d');
+            renderIconToCanvas(tempCanvas, downloadSize);
 
-            const bgColor = document.getElementById('bgColor').value;
-            const borderRadius = document.getElementById('borderRadius').value;
-            const hueRotate = document.getElementById('hueRotate').value;
-            const brightness = document.getElementById('brightness').value;
-
-            // Save context
-            tempCtx.save();
-
-            // Create rounded rectangle path
-            const radius = (borderRadius / 100) * Math.min(downloadSize, downloadSize) / 2;
-            
-            if (borderRadius >= 100) {
-                // Draw circle when at 100%
-                tempCtx.beginPath();
-                tempCtx.arc(downloadSize / 2, downloadSize / 2, downloadSize / 2, 0, Math.PI * 2);
-                tempCtx.closePath();
-                tempCtx.clip();
-            } else {
-                // Draw rounded rectangle
-                tempCtx.beginPath();
-                tempCtx.moveTo(radius, 0);
-                tempCtx.lineTo(downloadSize - radius, 0);
-                tempCtx.arcTo(downloadSize, 0, downloadSize, radius, radius);
-                tempCtx.lineTo(downloadSize, downloadSize - radius);
-                tempCtx.arcTo(downloadSize, downloadSize, downloadSize - radius, downloadSize, radius);
-                tempCtx.lineTo(radius, downloadSize);
-                tempCtx.arcTo(0, downloadSize, 0, downloadSize - radius, radius);
-                tempCtx.lineTo(0, radius);
-                tempCtx.arcTo(0, 0, radius, 0, radius);
-                tempCtx.closePath();
-                tempCtx.clip();
-            }
-
-            // Draw background
-            tempCtx.fillStyle = bgColor;
-            tempCtx.fillRect(0, 0, downloadSize, downloadSize);
-
-            // Apply filters
-            tempCtx.filter = `hue-rotate(${hueRotate}deg) brightness(${brightness}%)`;
-
-            // Draw image
-            const scale = Math.min(downloadSize / uploadedImage.width, downloadSize / uploadedImage.height) * 0.8;
-            const x = (downloadSize - uploadedImage.width * scale) / 2;
-            const y = (downloadSize - uploadedImage.height * scale) / 2;
-            
-            tempCtx.drawImage(uploadedImage, x, y, uploadedImage.width * scale, uploadedImage.height * scale);
-            tempCtx.restore();
-
-            // Download
             tempCanvas.toBlob(function(blob) {
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
@@ -447,17 +740,71 @@
             });
         }
 
+        function openBatchExport() {
+            if (!uploadedImage) {
+                alert('Silakan upload gambar terlebih dahulu!');
+                return;
+            }
+            document.getElementById('batchModal').style.display = 'flex';
+        }
+
+        function closeBatchExport() {
+            document.getElementById('batchModal').style.display = 'none';
+        }
+
+        async function executeBatchExport() {
+            const checkboxes = document.querySelectorAll('.size-checklist input[type="checkbox"]:checked');
+            
+            if (checkboxes.length === 0) {
+                alert('Pilih minimal satu ukuran untuk diexport!');
+                return;
+            }
+
+            const tempCanvas = document.createElement('canvas');
+            
+            for (let checkbox of checkboxes) {
+                const size = parseInt(checkbox.value);
+                renderIconToCanvas(tempCanvas, size);
+                
+                const blob = await new Promise(resolve => tempCanvas.toBlob(resolve));
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = `icon-${size}x${size}.png`;
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
+            }
+
+            alert(`Berhasil export ${checkboxes.length} icon!`);
+            closeBatchExport();
+        }
+
         function resetEditor() {
             uploadedImage = null;
+            isGradient = false;
             document.getElementById('imageUpload').value = '';
             document.getElementById('bgColor').value = '#ffffff';
+            document.getElementById('gradientToggle').checked = false;
             document.getElementById('borderRadius').value = '0';
             document.getElementById('hueRotate').value = '0';
             document.getElementById('brightness').value = '100';
+            document.getElementById('padding').value = '20';
+            document.getElementById('shadowIntensity').value = '0';
+            document.getElementById('inverseToggle').checked = false;
+            document.getElementById('solidColorGroup').style.display = 'block';
+            document.getElementById('gradientColorGroup').style.display = 'none';
             document.getElementById('uploadPrompt').style.display = 'block';
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            updateCanvas();
         }
+
+        // Click outside modal to close
+        document.getElementById('batchModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBatchExport();
+            }
+        });
     </script>
 </body>
 </html>
