@@ -1,17 +1,16 @@
 import os
 import json
 
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(script_dir)
+# Ambil semua file .svg di folder saat ini
+icons = [
+    f[:-4] for f in os.listdir(".")
+    if f.lower().endswith(".svg")
+]
 
-# List all .svg files in the current directory
-svg_files = [f for f in os.listdir(script_dir) if f.endswith('.svg')]
+# Simpan ke ../icons.json
+output_path = os.path.join("..", "icons.json")
 
-# Extract names without .svg extension
-icon_names = [os.path.splitext(f)[0] for f in svg_files]
+with open(output_path, "w", encoding="utf-8") as f:
+    json.dump(icons, f)
 
-# Write to ../icons.json
-output_path = os.path.join(parent_dir, 'icons.json')
-with open(output_path, 'w') as f:
-    json.dump(icon_names, f)
+print(f"Generated {output_path} with {len(icons)} icons.")
